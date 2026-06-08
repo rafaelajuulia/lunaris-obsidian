@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useCartStore } from '@/store/cartStore'
 
 interface CartPanelProps {
@@ -9,8 +10,31 @@ interface CartPanelProps {
 
 export default function CartPanel({ isOpen, onClose }: CartPanelProps) {
   const { items, removeItem, total, clearCart } = useCartStore()
+  const [loading, setLoading] = useState(false)
 
   if (!isOpen) return null
+
+  async function handleCheckout() {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        clearCart()
+        window.location.href = data.url
+      } else {
+        alert('Erro ao processar pagamento. Tente novamente.')
+      }
+    } catch (err) {
+      alert('Erro ao conectar com o servidor.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
@@ -105,14 +129,17 @@ export default function CartPanel({ isOpen, onClose }: CartPanelProps) {
                 R$ {total().toFixed(2).replace('.', ',')}
               </span>
             </div>
-            <button style={{
-              fontFamily: 'Cinzel, serif', fontSize: '0.72rem',
-              letterSpacing: '0.18em', textTransform: 'uppercase',
-              padding: '0.85rem', background: 'var(--gold)',
-              color: '#0A0A0A', border: 'none', cursor: 'pointer',
-              fontWeight: 600, width: '100%',
-            }}>
-              Finalizar Compra
+            <button
+              onClick={handleCheckout}
+              disabled={loading}
+              style={{
+                fontFamily: 'Cinzel, serif', fontSize: '0.72rem',
+                letterSpacing: '0.18em', textTransform: 'uppercase',
+                padding: '0.85rem', background: loading ? 'rgba(200,169,107,0.5)' : 'var(--gold)',
+                color: '#0A0A0A', border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
+                fontWeight: 600, width: '100%',
+              }}>
+              {loading ? 'Processando...' : 'Finalizar Compra'}
             </button>
             <button onClick={clearCart} style={{
               fontFamily: 'Cinzel, serif', fontSize: '0.65rem',
