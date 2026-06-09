@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import ScrollIndicator from '@/components/ScrollIndicator'
 
 export default function Home() {
   return (
@@ -12,6 +13,10 @@ export default function Home() {
       padding: '0 clamp(1.5rem, 6vw, 5rem)',
       overflow: 'hidden',
     }}>
+
+      {/* SCROLL INDICATOR */}
+      <ScrollIndicator />
+
       <div style={{
         width: '100%',
         maxWidth: '1380px',

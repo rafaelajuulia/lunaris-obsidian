@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useCartStore } from '@/store/cartStore'
 import CartPanel from './CartPanel'
+import Image from 'next/image'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -22,16 +23,14 @@ export default function Navbar() {
       }}>
         {/* LOGO */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <div style={{
-            height: '52px', width: '160px',
-            border: '1px dashed var(--gold-border)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'Cinzel, serif', fontSize: '0.6rem',
-            letterSpacing: '0.1em', color: 'rgba(200,169,107,0.4)',
-            textTransform: 'uppercase',
-          }}>
-            Sua Logo Aqui
-          </div>
+          <Image
+            src="/logo.webp"
+            alt="Lunaris Obsidian"
+            width={180}
+            height={60}
+            style={{ objectFit: 'contain', height: '70px', width: 'auto' }}
+            priority
+          />
         </Link>
 
         {/* LINKS DESKTOP */}

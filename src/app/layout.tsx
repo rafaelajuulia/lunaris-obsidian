@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import StarField from '@/components/StarField'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'Lunaris Obsidian',
@@ -15,12 +16,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body>
+      <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <StarField />
         <Navbar />
-        <main style={{ position: 'relative', zIndex: 1, paddingTop: '76px' }}>
+        <main style={{ position: 'relative', zIndex: 1, paddingTop: '76px', flex: 1 }}>
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   )
